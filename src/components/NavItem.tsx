@@ -1,18 +1,22 @@
-import { signOut, signIn, useSession } from 'next-auth/react'
+import { User } from '@prisma/client';
+import { signOut, signIn } from 'next-auth/react'
 import Link from 'next/link'
 import React from 'react'
 
-const NavItem = ({mobile} : {mobile?: boolean}) => {
-  const { data: session, status} = useSession();
-  console.log({session}, status)
+interface NavItemProps {
+  mobile?: boolean;
+  currentUser?: User | null;
+}
 
+const NavItem = ({mobile, currentUser} : NavItemProps) => {
   
+    
   return (
     <ul className={`text-md justify-center flex gap-4 w-full items-center ${mobile && "flex-col h-full"}`}>
       <li className='py-2 text-center border-b-4 cursor-pointer'><Link href="/admin">Admin</Link></li>
       <li className='py-2 text-center border-b-4 cursor-pointer'><Link href="/user">User</Link></li>
       
-      {session?.user
+      {currentUser
       ?
       <li className='py-2 text-center border-b-4 cursor-pointer'>
         <button onClick={() => {signOut()}}>SignOut</button></li>
